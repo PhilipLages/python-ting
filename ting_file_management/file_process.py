@@ -1,12 +1,9 @@
 from file_management import txt_importer
 from queue import Queue
 
+
 def process(path_file, instance):
-    queue = Queue()
-
-    news = txt_importer(path_file)
-    for new in news:       
-
+    """Aqui irá sua implementação"""
 
 
 def remove(instance):

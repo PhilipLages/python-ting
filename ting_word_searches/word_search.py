@@ -14,7 +14,9 @@ def exists_word(word, instance: Queue):
     all_occurrences = []
     for file_path in instance.queue:
         file_info = create_file_info(file_path)
-        occurrences = find_word_occurrences(file_info["linhas_do_arquivo"], word)
+        occurrences = find_word_occurrences(
+            file_info["linhas_do_arquivo"], word
+            )
         if occurrences:
             all_occurrences.append({
                 "palavra": word,

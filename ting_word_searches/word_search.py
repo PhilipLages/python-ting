@@ -26,5 +26,25 @@ def exists_word(word, instance: Queue):
     return all_occurrences
 
 
-def search_by_word(word, instance):
-    """Aqui irá sua implementação"""
+def search_by_word(word, instance: Queue):
+    results = []
+    for file_path in instance.queue:
+        file_info = create_file_info(file_path)
+        occurrences = find_word_occurrences(
+            file_info["linhas_do_arquivo"], word
+        )
+        if occurrences:
+            file_results = {
+                "palavra": word,
+                "arquivo": file_info["nome_do_arquivo"],
+                "ocorrencias": []
+            }
+            for occurrence in occurrences:
+                line_number = occurrence["linha"]
+                line_content = file_info["linhas_do_arquivo"][line_number - 1]
+                file_results["ocorrencias"].append({
+                    "linha": line_number,
+                    "conteudo": line_content.strip()
+                })
+            results.append(file_results)
+    return results

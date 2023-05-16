@@ -1,57 +1,40 @@
-# from ting_file_management.priority_queue import PriorityQueue
-# from pytest import raises
+from ting_file_management.priority_queue import PriorityQueue
+from pytest import fixture, raises
 
 
-# def test_priority_queue():
-#     # Setup
-#     files = [
-#         {"name": "file1", "lines": 10},
-#         {"name": "file2", "lines": 5},
-#         {"name": "file3", "lines": 7},
-#         {"name": "file4", "lines": 3},
-#     ]
-#     queue = PriorityQueue()
+@fixture
+def files():
+  return [      
+    {"qtd_linhas": 8},
+    {"qtd_linhas": 3},
+    {"qtd_linhas": 6},
+    {"qtd_linhas": 2}
+  ]
 
-#     # Test priority queueing
-#     for file in files:
-#         queue.enqueue(file)
 
-#     assert queue.high_priority._data == [
-#         {"name": "file4", "lines": 3},
-#         {"name": "file2", "lines": 5},
-#     ]
-#     assert queue.regular_priority._data == [
-#         {"name": "file1", "lines": 10},
-#         {"name": "file3", "lines": 7},
-#     ]
+@fixture
+def queue():
+  return PriorityQueue()
 
-#     assert queue.search(0) == {"name": "file4", "lines": 3}
-#     assert queue.search(1) == {"name": "file2", "lines": 5}
-#     assert queue.search(2) == {"name": "file1", "lines": 10}
-#     assert queue.search(3) == {"name": "file3", "lines": 7}
 
-#     with raises(IndexError, match="Índice Inválido ou Inexistente"):
-#         queue.search(4)
+def test_basic_priority_queueing(files, queue):
+  queue.enqueue(files[0])
+  queue.enqueue(files[1])
+  assert queue.regular_priority.queue == [files[0]]
+  assert queue.high_priority.queue == [files[1]]
+  assert queue.search(1) == files[0]
 
-#     # Test dequeuing
-#     assert queue.dequeue() == {"name": "file4", "lines": 3}
-#     assert queue.high_priority._data == [{"name": "file2", "lines": 5}]
-#     assert queue.regular_priority._data == [
-#         {"name": "file1", "lines": 10},
-#         {"name": "file3", "lines": 7},
-#     ]
+  queue.enqueue(files[2])
+  queue.enqueue(files[3])
 
-#     assert queue.dequeue() == {"name": "file2", "lines": 5}
-#     assert queue.high_priority.is_empty()
-#     assert queue.regular_priority._data == [
-#         {"name": "file1", "lines": 10},
-#         {"name": "file3", "lines": 7},
-#     ]
+  assert queue.search(0) == files[1]
 
-#     assert queue.dequeue() == {"name": "file1", "lines": 10}
-#     assert queue.high_priority.is_empty()
-#     assert queue.regular_priority._data == [{"name": "file3", "lines": 7}]
+  with raises(
+    IndexError, match="Índice Inválido ou Inexistente"
+  ):
+    queue.search(6)
 
-#     assert queue.dequeue() == {"name": "file3", "lines": 7}
-#     assert queue.high_priority.is_empty()
-#     assert queue.regular_priority.is_empty()
+  assert queue.dequeue() == files[1]
+  assert queue.dequeue() == files[3]
+  assert queue.dequeue() == files[0]
+  assert queue.dequeue() == files[2]

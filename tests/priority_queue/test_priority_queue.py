@@ -4,17 +4,17 @@ from pytest import fixture, raises
 
 @fixture
 def files():
-    return [      
-      {"qtd_linhas": 8},
-      {"qtd_linhas": 3},
-      {"qtd_linhas": 6},
-      {"qtd_linhas": 2}
-    ]
+	return [      
+		{"qtd_linhas": 8},
+		{"qtd_linhas": 3},
+		{"qtd_linhas": 6},
+		{"qtd_linhas": 2}
+	]
 
 
 @fixture
 def queue():
-    return PriorityQueue()
+	return PriorityQueue()
 
 
 def test_basic_priority_queueing(files, queue):
